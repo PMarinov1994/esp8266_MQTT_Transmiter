@@ -5,6 +5,10 @@
 CWorkingStation::CWorkingStation()
     : m_client(m_espClient), m_currState(MESSAGE_PARSER::WAIT_START){};
 
+/*
+*   \brief - The parse and dispatch of commands function.
+*
+*/
 void CWorkingStation::HandleCommands()
 {
     this->FetchCommands();
@@ -56,11 +60,19 @@ bool CWorkingStation::InitFromFS()
     return true;
 }
 
+/*
+*	\brief Checks if a command is waiting in the queue.
+*
+*/
 bool CWorkingStation::HasCommands()
 {
     return !m_commandQueue.empty();
 }
 
+/*
+*	\brief Parses the Serail buffer and creates commands.
+*
+*/
 void CWorkingStation::FetchCommands()
 {
     switch (m_currState)
@@ -187,6 +199,10 @@ void CWorkingStation::FetchCommands()
     }
 }
 
+/*
+*	\brief Executes a command in the queue.
+*
+*/
 int CWorkingStation::ExecuteCommand(int *outCmdId)
 {
     int result = 0;
@@ -198,26 +214,6 @@ int CWorkingStation::ExecuteCommand(int *outCmdId)
 
     char *pEnd;
     int cmdId = strtol(cmd->m_command.c_str(), &pEnd, 10);
-
-    DEBUG_PRINT("cmdId: ");
-    DEBUG_PRINT(cmd->m_id);
-    DEBUG_PRINT(" Exec cmd: ");
-    DEBUG_PRINT(cmdId);
-#if (PRINT_LINES == 1)
-    std::map<String, String>::iterator it = cmd->m_args.begin();
-    while (it != cmd->m_args.end())
-    {
-        DEBUG_PRINT(" argName: ");
-        DEBUG_PRINT(it->first);
-        DEBUG_PRINT(" argParam: ");
-        DEBUG_PRINT(it->second);
-
-        it++;
-    }
-
-    DEBUG_PRINT_LN("");
-
-#endif
 
     switch (cmdId)
     {
@@ -361,7 +357,7 @@ int CWorkingStation::ExecuteCommand(int *outCmdId)
 }
 
 /*
-*	\brief This will loop in main
+*	\brief
 */
 int CWorkingStation::ConnectToMQTT()
 {
@@ -392,6 +388,10 @@ int CWorkingStation::ConnectToMQTT()
     return m_client.state();
 }
 
+/*
+*	\brief 
+*
+*/
 int CWorkingStation::ConnectToWifi()
 {
     if (!WiFi.mode(WIFI_STA))
@@ -423,6 +423,10 @@ int CWorkingStation::ConnectToWifi()
     return SUCCESS;
 }
 
+/*
+*	\brief 
+*
+*/
 int CWorkingStation::DisconnectFromWifi()
 {
     if (m_client.connected())
@@ -439,6 +443,10 @@ int CWorkingStation::DisconnectFromWifi()
     return SUCCESS;
 }
 
+/*
+*	\brief 
+*
+*/
 int CWorkingStation::CmdMqttPublish(const char *topic, const char *message)
 {
     if (!m_client.connected())

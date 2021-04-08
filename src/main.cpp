@@ -35,7 +35,9 @@ void setup()
     Serial.begin(115200);
     Serial.println("SETUP");
 
-    bool littleFs = LittleFS.begin();
+    bool littleFs __attribute__((unused));
+    littleFs = LittleFS.begin();
+
     DEBUG_PRINT("SPIFFS Status: ");
     DEBUG_PRINT_LN(littleFs);
 
