@@ -9,6 +9,7 @@
 #include "BootManager.h"
 #include "WorkingStation.h"
 #include "GlobalDefinitions.h"
+#include "CommDefinitions.h"
 
 // Setup variables
 CConfigurationManager configurationManager;
@@ -32,7 +33,7 @@ void setup()
     //    Has a hardware PULL_UP resistor.
     // *** LOW Firmware starts web server for configurations.
     // *** HIGHT (Normal) Firmware will read and post sensor data.
-    Serial.begin(115200);
+    Serial.begin(SERIAL_COMMUNICATION_SPEED);
     Serial.println("SETUP");
 
     bool littleFs __attribute__((unused));

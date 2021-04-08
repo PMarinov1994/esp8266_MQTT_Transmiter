@@ -16,6 +16,8 @@
 *
 */
 
+#define SERIAL_COMMUNICATION_SPEED 115200
+
 #define MESSAGE_START '|'
 #define MESSAGE_END '|'
 
