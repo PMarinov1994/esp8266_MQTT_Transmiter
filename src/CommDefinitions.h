@@ -31,6 +31,9 @@
 #define CMD_UNKNOWN 0
 #define ERROR_UNKNOWN_CMD 0xFF
 
+#define INIT_DONE_ID     0xCD
+#define INIT_DONE_RESULT 0xCD
+
 // ============================================================================================================
 
 // COMMAND

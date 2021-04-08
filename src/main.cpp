@@ -47,10 +47,19 @@ void setup()
 
     if (isConfigurationMode)
         configurationManager.Init();
+    else
+    {
+        // Send the INIT_READY_RESULT
+        String initDone;
+        initDone += MESSAGE_START;
+        initDone += String(INIT_DONE_ID);
+        initDone += RESPONSE_ID_RESULT_SEPARATOR;
+        initDone += String(INIT_DONE_RESULT);
+        initDone += MESSAGE_END;
 
-    DEBUG_PRINT_LN("========================================================");
-    DEBUG_PRINT_LN("========================================================");
-    DEBUG_PRINT_LN("========================================================");
+        Serial.println(initDone);
+    }
+
 }
 
 void loop()
