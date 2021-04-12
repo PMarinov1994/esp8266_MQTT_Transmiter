@@ -1,6 +1,7 @@
 #include "WorkingStation.h"
 #include "ConfigurationFile.h"
 #include "CommDefinitions.h"
+#include <Arduino.h>
 
 CWorkingStation::CWorkingStation()
     : m_client(m_espClient), m_currState(MESSAGE_PARSER::WAIT_START){};
@@ -34,6 +35,8 @@ void CWorkingStation::HandleCommands()
 */
 bool CWorkingStation::InitFromFS()
 {
+    DEBUG_PRINT_LN("InitFromFS");
+
     CConfigurationFile configFile;
     if (!configFile.ParseConfiguration())
         return false;
@@ -112,6 +115,7 @@ void CWorkingStation::FetchCommands()
         break;
 
     case MESSAGE_PARSER::PARSE_MESSAGE:
+
         int buffLen = m_messageBuffer.length();
 
         int commandEnd = m_messageBuffer.indexOf(COMMAND_ARG_SEPARATOR);
@@ -215,6 +219,8 @@ int CWorkingStation::ExecuteCommand(int *outCmdId)
     char *pEnd;
     int cmdId = strtol(cmd->m_command.c_str(), &pEnd, 10);
 
+    DEBUG_PRINT("Executing Command: ");
+    DEBUG_PRINT_LN(cmdId);
     switch (cmdId)
     {
 

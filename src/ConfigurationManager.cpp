@@ -7,8 +7,6 @@
 */
 bool CConfigurationManager::Init()
 {
-    pinMode(ESP8266_LED, OUTPUT);
-
     WiFi.mode(WIFI_AP);
     WiFi.softAP(WiFiAPPID, WiFiAPPSK);
 

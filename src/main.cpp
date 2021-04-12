@@ -16,6 +16,7 @@ CConfigurationManager configurationManager;
 CWorkingStation workStation;
 
 bool isConfigurationMode = false;
+bool bIsInitPacketSend = false;
 
 void setup()
 {
@@ -33,7 +34,8 @@ void setup()
     //    Has a hardware PULL_UP resistor.
     // *** LOW Firmware starts web server for configurations.
     // *** HIGHT (Normal) Firmware will read and post sensor data.
-    Serial.begin(SERIAL_COMMUNICATION_SPEED);
+    Serial.begin(SERIAL_COMMUNICATION_SPEED, SERIAL_8E2);
+    delay(200);
     Serial.println("SETUP");
 
     bool littleFs __attribute__((unused));
@@ -45,10 +47,18 @@ void setup()
     DEBUG_PRINT("Booting mode: ");
     DEBUG_PRINT_LN(isConfigurationMode == true ? "configuration" : "operation");
 
+    pinMode(ESP8266_LED, OUTPUT);
+
     if (isConfigurationMode)
         configurationManager.Init();
-    else
-    {
+}
+
+void loop()
+{
+    if (!bIsInitPacketSend && !isConfigurationMode)
+    {   
+        digitalWrite(ESP8266_LED, LOW);
+
         // Send the INIT_READY_RESULT
         String initDone;
         initDone += MESSAGE_START;
@@ -58,12 +68,9 @@ void setup()
         initDone += MESSAGE_END;
 
         Serial.println(initDone);
+        bIsInitPacketSend = true;
     }
 
-}
-
-void loop()
-{
     if (isConfigurationMode)
         configurationManager.HandleConnection();
     else
